@@ -2,7 +2,6 @@ package sml;
 
 import java.io.File;
 import java.lang.reflect.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -85,27 +84,43 @@ public class Translator {
 
 		String ins = scan();
 
-		String ins2 = ins.substring(0, 1).toUpperCase() + ins.substring(1)
+		String ins2 = "sml." +  ins.substring(0, 1).toUpperCase() + ins.substring(1)
 				+ "Instruction";
 
-		Class newClass = ins2.getClass();
+		// Class newClass = ins2.getClass();
 		// System.out.println(newClass.getDeclaredFields());
+
+		Class newClass;
+		// try {
+		// newClass = Class.forName(ins2);
+		// } catch (ClassNotFoundException e1) {
+		// // TODO Auto-generated catch block
+		// e1.printStackTrace();
+		// }
 
 		r = scanInt();
 		s1 = scanInt();
 		s2 = scanInt();
 
-		switch (this.getNumberOfParameters(s1, s2)) {
-		// out
-		case 1:	
-			
-		//lin
-		case 2:
-			
-		// add / move / mul / sub 
-		case 3:
-		}
+		if (!ins2.equals("sml.BnzInstruction")) {
+			switch (this.getNumberOfParameters(s1, s2)) {
+			// out
+			case 1:
+				try {
+					newClass = Class.forName(ins2);
+					System.out.println(newClass.getConstructor(String.class, int.class));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+				// lin
+			case 2:
 
+				// add / move / mul / sub
+			case 3:
+			}
+		}
 		// switch (ins) {
 		// case "add":
 		// r = scanInt();

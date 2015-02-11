@@ -84,43 +84,34 @@ public class Translator {
 
 		String ins = scan();
 
-		String ins2 = "sml." +  ins.substring(0, 1).toUpperCase() + ins.substring(1)
-				+ "Instruction";
+		String ins2 = "sml." + ins.substring(0, 1).toUpperCase()
+				+ ins.substring(1) + "Instruction";
 
 		// Class newClass = ins2.getClass();
 		// System.out.println(newClass.getDeclaredFields());
 
 		Class newClass;
-		// try {
-		// newClass = Class.forName(ins2);
-		// } catch (ClassNotFoundException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// }
+		try {
 
-		r = scanInt();
-		s1 = scanInt();
-		s2 = scanInt();
+			newClass = Class.forName(ins2);
+			final ArrayList<Object> params = new ArrayList<Object>();
 
-		if (!ins2.equals("sml.BnzInstruction")) {
-			switch (this.getNumberOfParameters(s1, s2)) {
-			// out
-			case 1:
-				try {
-					newClass = Class.forName(ins2);
-					System.out.println(newClass.getConstructor(String.class, int.class));
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				break;
-				// lin
-			case 2:
+			Constructor cotr = newClass.getDeclaredConstructors()[1];
 
-				// add / move / mul / sub
-			case 3:
+			Class<?>[] pTypes = cotr.getParameterTypes();
+			for (Class<?> pType : pTypes) {
+				System.out.println(pType.getName());
+				params.add(pType.isPrimitive() && pType.getName().equals("int") ? scanInt()
+						: scan());
 			}
+			
+			
+
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+
 		// switch (ins) {
 		// case "add":
 		// r = scanInt();
@@ -188,9 +179,5 @@ public class Translator {
 		} catch (NumberFormatException e) {
 			return Integer.MAX_VALUE;
 		}
-	}
-
-	private int getNumberOfParameters(int s1, int s2) {
-		return s2 != Integer.MAX_VALUE ? 3 : s1 != Integer.MAX_VALUE ? 2 : 1;
 	}
 }

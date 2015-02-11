@@ -95,17 +95,20 @@ public class Translator {
 
 			newClass = Class.forName(ins2);
 			final ArrayList<Object> params = new ArrayList<Object>();
+			params.add(label);
 
 			Constructor cotr = newClass.getDeclaredConstructors()[1];
-
+			boolean skipFirst = true;
 			Class<?>[] pTypes = cotr.getParameterTypes();
 			for (Class<?> pType : pTypes) {
 				System.out.println(pType.getName());
+				if (!skipFirst)
 				params.add(pType.isPrimitive() && pType.getName().equals("int") ? scanInt()
 						: scan());
+				skipFirst = false;
 			}
 			
-			
+			return (Instruction)cotr.newInstance(params.toArray());
 
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
